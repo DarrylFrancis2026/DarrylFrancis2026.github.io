@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name — Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #242424;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200, 169, 110, 0.12);
+      --text: #e8e0d4;
+      --text-muted: #7a7068;
+      --text-dim: #4a4540;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --mono: 'DM Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 40px 100px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 48px;
+      margin-bottom: 56px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .name-block h1 {
+      font-family: var(--serif);
+      font-size: clamp(42px, 7vw, 72px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .name-block h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .name-block .title {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    .contact-block {
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 2;
+    }
+
+    .contact-block a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .contact-block a:hover { opacity: 0.7; }
+
+    .tagline {
+      margin-top: 28px;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    /* ── SECTION ── */
+    section {
+      margin-bottom: 52px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.3s; }
+    section:nth-child(5) { animation-delay: 0.4s; }
+    section:nth-child(6) { animation-delay: 0.5s; }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── EXPERIENCE ENTRY ── */
+    .entry {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0 32px;
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .entry:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .entry-meta {
+      padding-top: 2px;
+    }
+
+    .entry-date {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+    }
+
+    .entry-tag {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(200,169,110,0.2);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .entry-body h3 {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .entry-body .company {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .entry-body p {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 540px;
+    }
+
+    .entry-body ul {
+      margin-top: 12px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .entry-body ul li {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      padding: 3px 0 3px 16px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .entry-body ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+    }
+
+    /* ── SKILLS GRID ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-group h4 {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .skill-group .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-group .tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .skill-group .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── EDUCATION ── */
+    .edu-entry {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 0 32px;
+      margin-bottom: 24px;
+    }
+
+    .edu-entry:last-child { margin-bottom: 0; }
+
+    .edu-year {
+      font-size: 11px;
+      color: var(--text-dim);
+      padding-top: 3px;
+    }
+
+    .edu-body h3 {
+      font-family: var(--serif);
+      font-size: 19px;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .edu-body .school {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer span {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .page { padding: 40px 24px 80px; }
+
+      .entry, .edu-entry {
+        grid-template-columns: 1fr;
+        gap: 6px 0;
+      }
+
+      .entry-meta, .edu-year {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-top { flex-direction: column; }
+      .contact-block { text-align: left; }
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: white; color: #1a1a1a; }
+      .page { padding: 20px; max-width: 100%; }
+      section, header { animation: none; }
+      :root {
+        --bg: white; --surface: white; --border: #ddd;
+        --text: #1a1a1a; --text-muted: #555; --text-dim: #999;
+        --accent: #8a6e3a;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="header-top">
+      <div class="name-block">
+        <h1>Your <em>Name</em></h1>
+        <p class="title">Your Job Title &nbsp;·&nbsp; Your City, Country</p>
+      </div>
+      <div class="contact-block">
+        <a href="mailto:you@email.com">you@email.com</a><br/>
+        <a href="tel:+10000000000">+1 (000) 000-0000</a><br/>
+        <a href="https://linkedin.com/in/yourhandle" target="_blank">linkedin.com/in/yourhandle</a><br/>
+        <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a>
+      </div>
+    </div>
+    <p class="tagline">A one-sentence summary of who you are and what you bring — make it memorable.</p>
+  </header>
+
+  <!-- ── EXPERIENCE ── -->
+  <section>
+    <div class="section-label">Experience</div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <div class="entry-date">Jan 2023<br/>— Present</div>
+        <span class="entry-tag">Full-time</span>
+      </div>
+      <div class="entry-body">
+        <h3>Senior [Your Role]</h3>
+        <div class="company">Company Name &nbsp;·&nbsp; City or Remote</div>
+        <ul>
+          <li>Describe your biggest achievement here — use numbers when you can (e.g. "Reduced load time by 40%")</li>
+          <li>Second key responsibility or accomplishment</li>
+          <li>Third highlight — tools, technologies, or team scope</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <div class="entry-date">Mar 2020<br/>— Dec 2022</div>
+        <span class="entry-tag">Full-time</span>
+      </div>
+      <div class="entry-body">
+        <h3>[Your Role]</h3>
+        <div class="company">Previous Company &nbsp;·&nbsp; City</div>
+        <ul>
+          <li>Key accomplishment at this role</li>
+          <li>Another achievement or responsibility</li>
+          <li>Something you built, led, or improved</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <div class="entry-date">Jun 2018<br/>— Feb 2020</div>
+        <span class="entry-tag">Full-time</span>
+      </div>
+      <div class="entry-body">
+        <h3>[Your Role]</h3>
+        <div class="company">Earlier Company &nbsp;·&nbsp; City</div>
+        <ul>
+          <li>Key accomplishment at this role</li>
+          <li>Another achievement or responsibility</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section>
+    <div class="section-label">Skills</div>
+    <div class="skills-grid">
+
+      <div class="skill-group">
+        <h4>Category 1</h4>
+        <div class="tags">
+          <span class="tag">Skill A</span>
+          <span class="tag">Skill B</span>
+          <span class="tag">Skill C</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Category 2</h4>
+        <div class="tags">
+          <span class="tag">Skill D</span>
+          <span class="tag">Skill E</span>
+          <span class="tag">Skill F</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Category 3</h4>
+        <div class="tags">
+          <span class="tag">Skill G</span>
+          <span class="tag">Skill H</span>
+          <span class="tag">Skill I</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h4>Languages</h4>
+        <div class="tags">
+          <span class="tag">English</span>
+          <span class="tag">Spanish</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── EDUCATION ── -->
+  <section>
+    <div class="section-label">Education</div>
+
+    <div class="edu-entry">
+      <div class="edu-year">2018</div>
+      <div class="edu-body">
+        <h3>B.Sc. / B.A. in Your Field</h3>
+        <div class="school">University Name &nbsp;·&nbsp; City, Country</div>
+      </div>
+    </div>
+
+    <div class="edu-entry">
+      <div class="edu-year">2017</div>
+      <div class="edu-body">
+        <h3>Relevant Certification or Course</h3>
+        <div class="school">Issuing Body</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span>Last updated · May 2026</span>
+    <div class="footer-links">
+      <a href="mailto:you@email.com">Email me</a>
+      <a href="https://linkedin.com/in/yourhandle" target="_blank">LinkedIn</a>
+      <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
